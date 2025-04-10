@@ -49,5 +49,17 @@ namespace WebApplicationNetFramework.Tests
             Assert.AreEqual(1, result, "The modulo of 10 and 3 should return 1.");
         }
 
+        [TestMethod]
+        public void TestPower()
+        {
+            double result = Calculator.Power(2, 3);
+            Assert.AreEqual(8, result, "2 raised to the power of 3 should return 8.");
+        }
+        [TestMethod]
+        public void TestSquareRoot()
+        {
+            double result = Calculator.SquareRoot(16);
+            Assert.AreEqual(4, result, "The square root of 16 should return 4.");
+        }
     }
 }
