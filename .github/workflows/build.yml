@@ -48,8 +48,24 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"nguyen365-original_sample" /o:"nguyen365-original" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build
+          # SONAR BEGIN
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"nguyen365-original_sample" /o:"nguyen365-original" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=coverage.xml
+          
+          # Build project
+          msbuild.exe NetFramework.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release"
+          
+          # Define paths to OpenCover and ReportGenerator executables, # Replace {version} with the actual version number or use a script to dynamically find it
+          $openCoverPath = ".\packages\OpenCover.4.7.1221\tools\OpenCover.Console.exe"
+          $reportGeneratorPath = ".\packages\ReportGenerator.5.2.2\tools\net47\ReportGenerator.exe"
+          
+          # Run OpenCover
+          & $openCoverPath -target:"vstest.console.exe" -targetargs:"NetFramework.Tests\bin\Release\NetFramework.Tests.dll" -filter:"+[NetFramework*]* -[*.Tests]*" -register:user -excludebyattribute:*.ExcludeFromCodeCoverage* -output:coverage.xml
+          
+          # Convert coverage report with ReportGenerator
+          & $reportGeneratorPath "-reports:coverage.xml" "-targetdir:coveragereport" -reporttypes:Cobertura
+          
+          # SONAR BEGIN
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
