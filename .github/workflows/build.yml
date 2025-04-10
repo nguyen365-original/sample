@@ -58,7 +58,7 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"nguyen365-original_sample" /o:"nguyen365-original" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=coverage.xml
           
           # Build project
-          msbuild.exe NetFramework.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release"
+          msbuild.exe NetFramework.sln /nologo /nr:false /p:platform="Any CPU" /p:configuration="Release"
           
           # Define paths to OpenCover and ReportGenerator executables, # Replace {version} with the actual version number or use a script to dynamically find it
           $openCoverPath = ".\packages\OpenCover.4.7.1221\tools\OpenCover.Console.exe"
