@@ -55,7 +55,7 @@ jobs:
         shell: powershell
         run: |
           # SONAR BEGIN
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"nguyen365-original_sample" /o:"nguyen365-original" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=coverage.xml
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"nguyen365-original-new_sample" /o:"nguyen365-original-new" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=coverage.xml
           
           # Build project
           msbuild.exe NetFramework.sln /nologo /nr:false /p:platform="Any CPU" /p:configuration="Release"
