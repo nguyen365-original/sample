@@ -48,5 +48,20 @@ namespace WebApplicationNetFramework
         {
             return Math.Pow(baseValue, exponent);
         }
+        // Returns the square root of a number.
+        public static double SquareRoot(double value)
+        {
+            if (value < 0)
+            {
+                throw new ArgumentOutOfRangeException("Cannot take the square root of a negative number.");
+            }
+            return Math.Sqrt(value);
+        }
+        // Returns the absolute value of a number.
+        public static double Absolute(double value)
+        {
+            return Math.Abs(value);
+        }
+
     }
 }
